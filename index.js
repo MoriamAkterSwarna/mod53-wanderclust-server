@@ -37,6 +37,14 @@ async function run() {
 
     const db = client.db("wanderlust");
     const destinationsCollection = db.collection("destinations");
+    const userCollection = db.collection("users"); 
+
+    // User related API endpoints
+    app.post("/api/users", async (req, res) => {
+      const user = req.body;
+      const result = await userCollection.insertOne(user);
+      res.json(result);
+    });
 
 
     // Destination related API endpoints
