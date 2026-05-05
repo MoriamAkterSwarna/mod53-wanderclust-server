@@ -38,6 +38,7 @@ async function run() {
     const db = client.db("wanderlust");
     const destinationsCollection = db.collection("destinations");
     const userCollection = db.collection("users"); 
+    const bookingsCollection = db.collection("bookings");
 
     // User related API endpoints
     app.post("/api/users", async (req, res) => {
@@ -107,6 +108,21 @@ async function run() {
       const result = await destinationsCollection.deleteOne({
         _id: new ObjectId(id),
       });
+      res.json(result);
+    });
+
+    // Booking related API endpoints
+
+    app.get("/api/bookings/user/:userId", async (req, res) => {
+      const userId = req.params.userId;
+      const bookings = await bookingsCollection.find({ userId }).toArray();
+      res.json(bookings);
+    });
+
+     app.post("/api/bookings", async (req, res) => {
+      const booking = req.body;
+      console.log(booking)
+      const result = await bookingsCollection.insertOne(booking);
       res.json(result);
     });
 
